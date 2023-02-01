@@ -3,6 +3,7 @@
 1. [Day00](#day00)
 2. [Day01](#day01)
 3. [Day02](#day02)
+4. [Day03](#day03)
 
 ## day00
 the task is [in this folder](Day00-0)
@@ -12,3 +13,6 @@ the task is [in this folder](Day01-0)
 
 ## day02
 the task is [in this folder](Day02-0)
+
+## day03
+the task is [in this folder](Day03-0)
