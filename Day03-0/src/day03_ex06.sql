@@ -1,0 +1,13 @@
+-- WITH pizza1 AS (SELECT name, pizza_name FROM pizzeria
+--     JOIN menu on pizzeria.id = menu.pizzeria_id),
+--      pizza2 AS (SELECT name, pizza_name FROM pizzeria
+--     JOIN menu on pizzeria.id = menu.pizzeria_id)
+
+-- SELECT (SELECT pizza1.pizza_name FROM pizza1
+-- JOIN pizza2 on pizza1.pizza_name = pizza2.pizza_name
+-- WHERE pizza1.pizza_name = pizza2.pizza_name) AS pizza_name,
+--        pizza1.name AS pizzeria_name_1, pizza2.name AS pizzeria_name_2, price
+-- FROM pizza2
+-- JOIN pizza1 on pizza1.pizza_name = pizza2.pizza_name
+--     JOIN pizzeria on pizzeria.name = pizza1.pizza_name
+-- JOIN menu on menu.pizzeria_id = pizzeria.id
