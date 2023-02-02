@@ -1,13 +1,9 @@
--- WITH pizza1 AS (SELECT name, pizza_name FROM pizzeria
---     JOIN menu on pizzeria.id = menu.pizzeria_id),
---      pizza2 AS (SELECT name, pizza_name FROM pizzeria
---     JOIN menu on pizzeria.id = menu.pizzeria_id)
+WITH t1 AS (SELECT DISTINCT pizzeria.id AS id, pizzeria.name AS pizzeria_name_1,
+	        menu.pizza_name AS pizza_name, price AS price FROM menu
+            JOIN pizzeria ON pizzeria.id = menu.pizzeria_id),
+     t2 AS (SELECT DISTINCT pizzeria.id AS id, pizzeria.name AS pizzeria_name_2,
+	        menu.pizza_name AS pizza_name, price AS price FROM menu
+            JOIN pizzeria ON pizzeria.id = menu.pizzeria_id)
 
--- SELECT (SELECT pizza1.pizza_name FROM pizza1
--- JOIN pizza2 on pizza1.pizza_name = pizza2.pizza_name
--- WHERE pizza1.pizza_name = pizza2.pizza_name) AS pizza_name,
---        pizza1.name AS pizzeria_name_1, pizza2.name AS pizzeria_name_2, price
--- FROM pizza2
--- JOIN pizza1 on pizza1.pizza_name = pizza2.pizza_name
---     JOIN pizzeria on pizzeria.name = pizza1.pizza_name
--- JOIN menu on menu.pizzeria_id = pizzeria.id
+SELECT DISTINCT t1.pizza_name, t1.pizzeria_name_1, t2.pizzeria_name_2, t1.price FROM t1
+JOIN t2 on t1.pizza_name = t2.pizza_name AND t1.price = t2.price AND t1.id > t2.id;
