@@ -5,7 +5,8 @@
 3. [Day02](#day02)
 4. [Day03](#day03)
 5. [Day04](#day04)
-6. [Day05](#day05)
+6. [Team00](#team00)
+7. [Day05](#day05)
 
 ## day00
 the task is [in this folder](Day00-0)
@@ -21,6 +22,9 @@ the task is [in this folder](Day03-0)
 
 ## day04
 the task is [in this folder](Day04-0)
+
+## team00
+the task is [in this folder](Team_00-0)
 
 ## day05
 the task is [in this folder](Day05-0)
