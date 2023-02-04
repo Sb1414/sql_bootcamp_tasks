@@ -24,7 +24,7 @@ the task is [in this folder](Day03-0)
 the task is [in this folder](Day04-0)
 
 ## team00
-the task is [in this folder](Team_00-0)
+the task is [in this folder](Team00-0)
 
 ## day05
 the task is [in this folder](Day05-0)
