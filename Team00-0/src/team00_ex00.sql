@@ -46,13 +46,15 @@ WITH first_point AS (SELECT city_1 AS c11, city_2 AS c12, cost AS cost1 FROM rou
                 ORDER BY c11, c21_, c31, c41),
      full_tour_table AS (SELECT DISTINCT c11 AS c11, c21, c31, c41, c11 AS c51,
                 (cost_route + (SELECT cost_full
-                FROM costes WHERE city_c_1 = c41 AND city_c_2 = c11)) AS total_cost
-                FROM f_s_t_f_cost)
+                FROM costes WHERE city_c_1 = c41 AND city_c_2 = c11)) AS t_cost
+                FROM f_s_t_f_cost),
+     searh_min_cost AS (SELECT min(t_cost) AS total_cost FROM full_tour_table)
 
 
-SELECT DISTINCT total_cost, concat('{',c11,',', c21,',', c31,',', c41,',', c51,'}') AS tour
+SELECT total_cost, concat('{',c11,',', c21,',', c31,',', c41,',', c51,'}') AS tour
 FROM full_tour_table
-ORDER BY total_cost
+JOIN searh_min_cost on full_tour_table.t_cost = total_cost
+WHERE c11 = 'a'
 ;
 
 
