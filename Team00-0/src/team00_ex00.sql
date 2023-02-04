@@ -43,13 +43,18 @@ WITH first_point AS (SELECT city_1 AS c11, city_2 AS c12, cost AS cost1 FROM rou
                 (SELECT cost_full FROM costes WHERE city_c_1 = c31 AND city_c_2 = c41)) AS cost_route
                 FROM f_s_t_cost
                 JOIN four_point on NOT(c41 = c11) AND NOT(c41 = c21_) AND NOT(c41 = c31)
-                ORDER BY c11, c21_, c31, c41)
+                ORDER BY c11, c21_, c31, c41),
+     full_tour_table AS (SELECT DISTINCT c11 AS c11, c21, c31, c41, c11 AS c51,
+                (cost_route + (SELECT cost_full
+                FROM costes WHERE city_c_1 = c41 AND city_c_2 = c11)) AS total_cost
+                FROM f_s_t_f_cost)
 
 
-SELECT DISTINCT c11 AS c11, c21, c31, c41, c11 AS c11, (cost_route + (SELECT cost_full
-                FROM costes WHERE city_c_1 = c41 AND city_c_2 = c11)) AS full_cost
-FROM f_s_t_f_cost
+SELECT DISTINCT total_cost, concat('{',c11,',', c21,',', c31,',', c41,',', c51,'}') AS tour
+FROM full_tour_table
+ORDER BY total_cost
 ;
+
 
 -- SELECT generate_series(c11, c21_,
 --     (SELECT DISTINCT c31 FROM third_point WHERE NOT(c31 = c21_) AND NOT (c11 = c31)), '2')
