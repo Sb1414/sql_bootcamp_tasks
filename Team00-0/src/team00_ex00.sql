@@ -24,6 +24,7 @@ INSERT INTO public.routes (city_1, city_2, cost) VALUES ('d', 'c', 30);
 WITH first_point AS (SELECT city_1 AS c11, city_2 AS c12, cost AS cost1 FROM routes),
      second_point AS (SELECT city_1 AS c21, city_2 AS c22, cost AS cost2 FROM routes),
      third_point AS (SELECT city_1 AS c31, city_2 AS c32, cost AS cost3 FROM routes),
+     four_point AS (SELECT city_1 AS c41, city_2 AS c42, cost AS cost4 FROM routes),
      f_and_s AS (SELECT c11, (SELECT DISTINCT c21 FROM second_point
                 WHERE c12 = c21) AS c21_
                 FROM first_point
@@ -31,19 +32,24 @@ WITH first_point AS (SELECT city_1 AS c11, city_2 AS c12, cost AS cost1 FROM rou
      costes AS (SELECT city_1 AS city_c_1, city_2 AS city_c_2, cost AS cost_full FROM routes),
      f_s_cost AS (SELECT DISTINCT c11, c21_, (SELECT DISTINCT cost_full AS cost_f_s FROM costes
                 WHERE city_c_1 = c11 AND city_c_2 = c21_)
-                FROM f_and_s)
+                FROM f_and_s),
+     f_s_t_cost AS (SELECT DISTINCT c11, c21_, c31, ((SELECT cost_full FROM costes
+                WHERE city_c_1 = c11 AND city_c_2 = c21_) +
+                (SELECT cost_full FROM costes WHERE city_c_1 = c21_ AND city_c_2 = c31)) AS cost_1_2_3
+                FROM f_s_cost
+                JOIN third_point on NOT(third_point.c31 = c11) AND NOT(c21_ = third_point.c31)
+                ORDER BY c11, c21_, c31),
+     f_s_t_f_cost AS (SELECT DISTINCT c11, c21_ AS c21, c31, c41, (cost_1_2_3 +
+                (SELECT cost_full FROM costes WHERE city_c_1 = c31 AND city_c_2 = c41)) AS cost_route
+                FROM f_s_t_cost
+                JOIN four_point on NOT(c41 = c11) AND NOT(c41 = c21_) AND NOT(c41 = c31)
+                ORDER BY c11, c21_, c31, c41)
 
--- SELECT c11, c21_, (SELECT DISTINCT c31 FROM third_point WHERE NOT(c31 = c21_)
---                                                           AND NOT (c11 = c31)) , cost_f_s
--- FROM f_s_cost;
-SELECT DISTINCT c11, c21_, c31, (SELECT cost_full FROM costes WHERE city_c_1 = c11 AND city_c_2 = c21_) +
-                (SELECT cost_full FROM costes WHERE city_c_1 = c21_ AND city_c_2 = c31)
 
-FROM f_s_cost
-JOIN third_point on NOT(third_point.c31 = c11) AND NOT(c21_ = third_point.c31)
-ORDER BY c11, c21_, c31
+SELECT DISTINCT c11 AS c11, c21, c31, c41, c11 AS c11, (cost_route + (SELECT cost_full
+                FROM costes WHERE city_c_1 = c41 AND city_c_2 = c11)) AS full_cost
+FROM f_s_t_f_cost
 ;
-
 
 -- SELECT generate_series(c11, c21_,
 --     (SELECT DISTINCT c31 FROM third_point WHERE NOT(c31 = c21_) AND NOT (c11 = c31)), '2')
