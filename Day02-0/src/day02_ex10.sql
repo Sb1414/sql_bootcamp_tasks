@@ -1,8 +1,7 @@
 WITH name1 (name, address, id) AS (
-    SELECT name, address, id FROM person
-), name2 (name, address, id) AS (
-    SELECT name, address, id FROM person
-)
+            SELECT name, address, id FROM person),
+     name2 (name, address, id) AS (
+            SELECT name, address, id FROM person)
 
 SELECT name1.name AS person_name1, name2.name AS person_name2, name1.address AS common_address
 FROM name1
