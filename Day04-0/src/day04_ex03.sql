@@ -4,3 +4,5 @@ SELECT missing_date::date FROM
 EXCEPT
 SELECT visit_date AS missing_date FROM person_visits
 ORDER BY missing_date;
+
+-- нужно было делать не view, а завпрос
